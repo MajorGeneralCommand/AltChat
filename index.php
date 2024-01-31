@@ -64,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap">
 </head>
 <body>
+<button class="top-right-button"><a href="Register.php">Registrer Deg</a></button>
+
     <div class="loginform">
         <h2>AltChat Login</h2>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
