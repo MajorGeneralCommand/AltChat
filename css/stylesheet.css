@@ -28,5 +28,21 @@ body {
     padding: 20px;
     border: 1px solid white;
     border-radius: 8px;
-    background-color: white; 
+    background-color: white; /* Set the background color you desire */
+}
+
+.top-right-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.top-right-button:hover {
+    background-color: #2980b9;
 }
