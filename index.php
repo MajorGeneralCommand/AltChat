@@ -5,7 +5,7 @@ $br = "";
 $errorMessage = ""; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $sql_les = "SELECT * FROM user_info";
+    $sql_les = "SELECT * FROM altchatuser_info";
     $resultat_les = mysqli_query($conn, $sql_les);
     $users = mysqli_fetch_all($resultat_les, MYSQLI_ASSOC);
 
