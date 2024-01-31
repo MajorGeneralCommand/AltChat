@@ -1,7 +1,7 @@
 <?php 
 include "connect.php";
 
-$sql_les = "SELECT * FROM user_info";
+$sql_les = "SELECT * FROM altchatuser_info";
 
 $resultat_les = mysqli_query($conn, $sql_les);
 
