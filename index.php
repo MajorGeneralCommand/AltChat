@@ -33,6 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($username == $user["user_username"] && password_verify($password, $user["user_password"])) {
                 // Passwords match
                 if (in_array($username, $admins)) {
+                    session_start();
+                    $_SESSION["redirect_allowed"] = true;
                     header("Location: Adminpanel.php");
                     exit();
                 } else {

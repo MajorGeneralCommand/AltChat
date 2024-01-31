@@ -1,11 +1,20 @@
 <?php 
+
 include "Connect.php";
 
 $sql_les = "SELECT * FROM altchatuser_info";
 
 $resultat_les = mysqli_query($conn, $sql_les);
 
-$users = mysqli_fetch_all($resultat_les, MYSQLI_ASSOC);?>
+$users = mysqli_fetch_all($resultat_les, MYSQLI_ASSOC);
+
+session_start();
+
+$redirectAllowed = isset($_SESSION['redirect_allowed']) ? $_SESSION['redirect_allowed'] : false;
+
+if ($redirectAllowed === true) {
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,4 +50,5 @@ $users = mysqli_fetch_all($resultat_les, MYSQLI_ASSOC);?>
     
     </table>
 </body>
-</html>
+</html> 
+<?php unset($_SESSION['redirect_allowed']); }?>
