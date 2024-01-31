@@ -2,32 +2,56 @@
 include "Connect.php";
 
 $br = "";
-$errorMessage = ""; 
+$errorMessage = "";
+
+$maxAttempts = 6;
+$lockoutTime = 60;
+
+session_start();
+
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $sql_les = "SELECT * FROM altchatuser_info";
-    $resultat_les = mysqli_query($conn, $sql_les);
-    $users = mysqli_fetch_all($resultat_les, MYSQLI_ASSOC);
-
-    $username = $_POST["username"];
-    $password = $_POST["password"];
-
-    foreach ($users as $user) {
-        if ($username == $user["user_username"] && $password == $user["user_password"]) {
-            if (in_array($username, $admins)) {
-              header("Location: Adminpanel.php");
-              exit();
-            }
-            else {
-              header("Location: Temp.php");
-              exit();  
-            }
-            
-        }
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF Token Validation Failed");
     }
 
-    $errorMessage = "Feil brukernavn eller passord!";
-    $br = "<br>";
+    if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $maxAttempts && (time() - $_SESSION['last_attempt_time']) < $lockoutTime) {
+        $errorMessage = "Too many login attempts. Please try again later.";
+        $br = "<br>";
+    } else {
+        $sql_les = "SELECT * FROM altchatuser_info";
+        $resultat_les = mysqli_query($conn, $sql_les);
+        $users = mysqli_fetch_all($resultat_les, MYSQLI_ASSOC);
+
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+
+        foreach ($users as $user) {
+            if ($username == $user["user_username"] && password_verify($password, $user["user_password"])) {
+                // Passwords match
+                if (in_array($username, $admins)) {
+                    header("Location: Adminpanel.php");
+                    exit();
+                } else {
+                    header("Location: Temp.php");
+                    exit();
+                }
+            }
+        }        
+
+        if (!isset($_SESSION['login_attempts']) || (time() - $_SESSION['last_attempt_time']) >= $lockoutTime) {
+            $_SESSION['login_attempts'] = 1;
+        } else {
+            $_SESSION['login_attempts']++;
+        }
+        $_SESSION['last_attempt_time'] = time();
+
+        $errorMessage = "Feil brukernavn eller passord!";
+        $br = "<br>";
+    }
 }
 ?>
 
@@ -47,6 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="username" name="username" required><br><br>
             <label for="password">Password: </label>
             <input type="password" id="password" name="password" required><br><br>
+
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
             <input type="submit" name="Login" value="Login">
             <?php echo $br; ?>
             <?php echo $br; ?>
