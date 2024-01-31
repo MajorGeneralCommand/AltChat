@@ -1,5 +1,5 @@
 <?php 
-include "connect.php";
+include "Connect.php";
 
 $sql_les = "SELECT * FROM altchatuser_info";
 
