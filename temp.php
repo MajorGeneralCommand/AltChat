@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Danke schon!</p>
+    <p>Kys!</p>
 </body>
 </html>

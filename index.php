@@ -1,5 +1,5 @@
 <?php
-include "connect.php";
+include "Connect.php";
 
 $br = "";
 $errorMessage = ""; 
@@ -15,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($users as $user) {
         if ($username == $user["user_username"] && $password == $user["user_password"]) {
             if (in_array($username, $admins)) {
-              header("Location: adminpanel.php");
+              header("Location: Adminpanel.php");
               exit();
             }
             else {
-              header("Location: temp.php");
+              header("Location: Temp.php");
               exit();  
             }
             
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="css/stylesheet.css">
+    <link rel="stylesheet" href="css/Stylesheet.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap">
 </head>
 <body>
